@@ -1,0 +1,44 @@
+welcome
+
+  
+  <html>  
+    <head>
+      <title> Real Time Chat </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <h1> Chat! </h1>
+        <form>
+            <input id="message" type="text" placeholder="message">
+            <input type="submit" value="Send">
+        </form>
+
+        <ul id="thread"></ul>
+
+ <script src="/socket.io/socket.io.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.1.js">
+    </script>
+<script>
+   $(document).ready(function($) {
+   	 var socket = io.connect('http://localhost:3000');
+	 	socket.on('connect', function () {
+          socket.emit('join', 'Hello server from client');
+       });	
+	    socket.on('thread', function(data) {
+        $('#thread').append('<li>' + data + '</li>');
+         }); 
+		 $('form').submit(function() {
+			var message = $('#message').val();
+			console.log('message',message);
+			//custom event name messages,it should match with server event name
+			socket.emit('messages', message);
+			this.reset();
+			return false;
+       });
+   });
+   
+   
+</script>
+    </body>
+ </html>  
