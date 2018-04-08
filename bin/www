@@ -8,11 +8,12 @@ var app = require('../app');
 var debug = require('debug')('chat-app:server');
 var http = require('http');
 
+
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '4000');
 app.set('port', port);
 
 /**
@@ -21,12 +22,15 @@ app.set('port', port);
 
 var server = http.createServer(app);
 
+var mongoDB=require('../config/db');
+var mongoose = require('mongoose');
+
+
 //Initilize Socket Connection
 var io = require('socket.io')(server);
 
-var clients=0;
 io.on('connection', function(socket){
-	clients++;
+  console.log('socket connected');
 	socket.on('join', function(data) {
   		console.log(data);
   	});
@@ -36,6 +40,11 @@ io.on('connection', function(socket){
 		 
   		socket.broadcast.emit('thread', data);
   	});
+
+  socket.on('send message',function(data){
+   console.log('send messageeeee');
+  });
+
 });	
 
   
