@@ -1,0 +1,12 @@
+var http = require('http');
+var mongoose = require('mongoose');
+var User = mongoose.model('user');
+
+
+exports.validateLogin=function(req,callback){
+	User.findOne({"uname":req.body.email,"password":req.body.password},function(data){
+		console.log(data);
+		callback(data);
+	});
+
+}
