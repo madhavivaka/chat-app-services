@@ -18,6 +18,8 @@ exports.userRegister=function(req,res,next){
 
 exports.getOnlineUsers=function(req,res,next){
    console.log('getOnlineUsers');
+
+ 
    authService.getOnlineUsers(req,function(response){
 	   res.json(response);
    });

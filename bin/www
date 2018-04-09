@@ -26,14 +26,41 @@ var mongoDB=require('../config/db');
 var mongoose = require('mongoose');
 
 
+
 //Initilize Socket Connection
 var io = require('socket.io')(server);
 
+app.use('/onlineusers', function(req,res){
+  console.log('io.sockets.adapter.rooms',io.sockets.adapter.rooms);
+  res.send(io.sockets.adapter.rooms);
+});
+
+
 io.on('connection', function(socket){
   console.log('socket connected');
+  
+//socket disconnected
+  socket.on('disconnect',function(){
+      console.log('user left',socket.id);
+      //tell all clients that user disconnected(io means overall server)
+      socket.broadcast.emit('user left',socket.id);
+
+  });
+
 	socket.on('join', function(data) {
-  		console.log(data);
+  		console.log('',data);
   	});
+
+  //tell all clients that user connected(io means overall server)
+  io.emit('user joined',socket.id)
+
+  //client sends message
+  socket.on('chat.message',function(message){
+    //emit this event to all clients
+    io.emit('chat.message',message);
+
+  });
+
 	//custom event messages
 	socket.on('messages', function(data){
   		socket.emit('thread', data);
@@ -41,7 +68,7 @@ io.on('connection', function(socket){
   		socket.broadcast.emit('thread', data);
   	});
 
-  socket.on('send message',function(data){
+  socket.on('chat message',function(data){
    console.log('send messageeeee');
   });
 

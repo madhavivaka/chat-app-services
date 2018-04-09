@@ -15,7 +15,6 @@ router.post('/api/getOnlineUsers', authController.getOnlineUsers);
 
 
 
-
 //router.post('/api/userLogin',  function(req, res, next) {
 	//authController.userLogin(req,res,function(res){
 
