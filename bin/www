@@ -30,14 +30,10 @@ var mongoose = require('mongoose');
 //Initilize Socket Connection
 var io = require('socket.io')(server);
 
-app.use('/onlineusers', function(req,res){
-  console.log('io.sockets.adapter.rooms',io.sockets.adapter.rooms);
-  res.send(io.sockets.adapter.rooms);
-});
 
 
 io.on('connection', function(socket){
-  console.log('socket connected');
+  console.log('socket connected',io.sockets.adapter.rooms);
   
 //socket disconnected
   socket.on('disconnect',function(){
@@ -47,30 +43,24 @@ io.on('connection', function(socket){
 
   });
 
-	socket.on('join', function(data) {
-  		console.log('',data);
-  	});
+	
 
   //tell all clients that user connected(io means overall server)
   io.emit('user joined',socket.id)
 
   //client sends message
   socket.on('chat.message',function(message){
+    console.log('server message',message)
     //emit this event to all clients
     io.emit('chat.message',message);
 
   });
 
-	//custom event messages
-	socket.on('messages', function(data){
-  		socket.emit('thread', data);
-		 
-  		socket.broadcast.emit('thread', data);
-  	});
+  socket.on('user typing',function(){
 
-  socket.on('chat message',function(data){
-   console.log('send messageeeee');
   });
+
+	
 
 });	
 

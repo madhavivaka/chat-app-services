@@ -11,6 +11,7 @@ exports.validateLogin=function(req,callback){
 			callback({status:"Fail",message:"User or Password not matching"});
 		}
 		else{
+			res.session.username=req.body.uname;
 			callback({status:"Success",message:"User Logged in sucessfully",data:req.body.uname});
 		}
 	});
