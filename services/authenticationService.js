@@ -11,8 +11,8 @@ exports.validateLogin=function(req,callback){
 			callback({status:"Fail",message:"User or Password not matching"});
 		}
 		else{
-			res.session.username=req.body.uname;
-			callback({status:"Success",message:"User Logged in sucessfully",data:req.body.uname});
+			console.log(data);
+			callback({status:"Success",message:"User Logged in sucessfully",data:data});
 		}
 	});
 
@@ -49,7 +49,6 @@ exports.userRegister=function(req,callback){
 exports.getOnlineUsers=function(req,callback){
 	
 	User.find({},function(err,data){
-		console.log('dataaaaaaaaaaaaaaa',data);
 		if(err || data == null){
 			callback({status:"Fail",message:"no onli users"});
 		}

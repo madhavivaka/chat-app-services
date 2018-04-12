@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var User = require("../model/user.js");
-var Message = require("../model/user.js");
+var User = require("./user.js");
+var Message = require("./message.js");
 
 var room = new mongoose.Schema({
     name: { type: String, lowercase: true, unique: true },
@@ -14,4 +14,4 @@ var room = new mongoose.Schema({
 // the schema is useless so far
 // we need to create a model using it
 // make this available to our users in our Node applications
-module.exports = mongoose.model('messageSchema', messageSchema);
+module.exports = mongoose.model('room', room);
