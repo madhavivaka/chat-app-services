@@ -25,7 +25,7 @@ var server = http.createServer(app);
 var mongoDB=require('../config/db');
 var mongoose = require('mongoose');
 var connections=[],users={},names={};
-
+var socketMapping={};
 
 //Initilize Socket Connection
 var io = require('socket.io')(server);
@@ -34,7 +34,6 @@ var io = require('socket.io')(server);
 io.on('connection', function(socket){
    connections.push[socket.id];
   console.log('socket connected',connections.length);
- 
    
 
   //tell all clients that user connected(io means overall server)
@@ -42,6 +41,8 @@ io.on('connection', function(socket){
   //if server emits user joined,update online users array
    socket.on('user joined',function(user){
           console.log('a user connected',user)
+           socketMapping[user.id]=socket.id;
+
           if(users[user.id] == undefined){
              users[user.id]=user.username;
           }
@@ -89,8 +90,8 @@ io.on('connection', function(socket){
    socket.on('chat.message',function(message){
           console.log('server message',message)
           //emit this event to all clients
-           io.emit('chat.message',{message:message,user:socket.username});
-           // socket.broadcast.to(message.receiver).emit('chat.message', {message:message,user:socket.username});
+          // io.emit('chat.message',{message:message,user:socket.username});
+            socket.broadcast.to(socketMapping[message.receiver]).emit('chat.message', {message:message,user:socket.username});
           //io.sockets.to(receiver).emit('chat.message', message);
          
    });
