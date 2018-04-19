@@ -1,0 +1,10 @@
+var http=require("http");
+var messagesService=require("../services/messagesService");
+
+exports.saveMessage=function(req,res,next){
+   console.log('in auth controller',authService);
+   messagesService.saveMessage(req,function(response){
+   	console.log('rrrrrrrrrrrrrr',response);
+	   res.json(response);
+   });
+}

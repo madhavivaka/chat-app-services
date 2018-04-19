@@ -33,6 +33,7 @@ exports.userRegister=function(req,callback){
 
           });
           user.save(function(err){
+          	  console.log('saving error',err);
 		      callback({status:"Success"});
           });
 		}
