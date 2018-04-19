@@ -9,8 +9,8 @@ var room = mongoose.model('room');
 
 exports.saveMessage=function(req,callback){
 	console.log('userRegister srvice',req.body.reqParams);
-	var data=req.body.reqParams;
-	User.findOne({"username":req.body.reqParams.username},function(err,response){
+	var data=req.body.message;
+	message.findOne({"username":req.body.reqParams.username},function(err,response){
 		console.log('responseresponse',response);
 		if(err || response == null){
           var user=new User({
