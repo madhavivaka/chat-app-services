@@ -2,33 +2,28 @@ var http = require('http');
 var mongoose = require('mongoose');
 var User = mongoose.model('user');
 var message = mongoose.model('message');
-var room = mongoose.model('room');
+var group = mongoose.model('Group');
 
 
 
 
 exports.saveMessage=function(req,callback){
-	console.log('userRegister srvice',req.body.reqParams);
+	console.log('save message',req.body.message);
 	var data=req.body.message;
-	message.findOne({"username":req.body.reqParams.username},function(err,response){
-		console.log('responseresponse',response);
-		if(err || response == null){
-          var user=new User({
-          	firstName:data.firstName,
-          	lastName:data.lastName,
-          	email:data.email,
-          	username:data.username,
-          	password:data.password
-
-          });
-          user.save(function(err){
-		      callback({status:"Success"});
-          });
-		}
-		else{
-			callback({status:"Fail",message:"User Already Exists"});
-		}
-		
+	
+      var messages =[{
+        receiver_id:data.receiver,
+        message:data.text,
+        sender_id:data.owner_user
+       }];
+	
+	var msg=new message();
+	msg.owner_user_id=data.owner_user;
+    msg.messages=messages;
+	msg.save(function(err){
+		if(err)
+			console.log(err);
+		callback({status:'Success'});
 	});
 
 }

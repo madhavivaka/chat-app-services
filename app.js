@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var user=require('./models/user');
-var room=require('./models/room');
+var group=require('./models/Group');
 
 var message=require('./models/message');
 

@@ -3,15 +3,15 @@ var Schema = mongoose.Schema;
 var User = require("./user.js");
 var Message = require("./message.js");
 
-var room = new mongoose.Schema({
+var Group = new mongoose.Schema({
     name: { type: String, lowercase: true, unique: true },
     topic: String,
     users: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-    messages: [{ type: Schema.Types.ObjectId, ref: 'Message' }],
     created_at: Date,
     updated_at: { type: Date, default: Date.now },
+    created_by:{ type: Schema.Types.ObjectId, ref: 'User' }
 });
 // the schema is useless so far
 // we need to create a model using it
 // make this available to our users in our Node applications
-module.exports = mongoose.model('room', room);
+module.exports = mongoose.model('Group', Group);
