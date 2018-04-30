@@ -7,3 +7,10 @@ exports.saveMessage=function(req,res,next){
 	   res.json(response);
    });
 }
+
+exports.getRecentMessages=function(req,res,next){
+   messagesService.getRecentMessages(req,function(response){
+   	console.log('rrrrrrrrrrrrrr',response);
+	   res.json(response);
+   });
+}

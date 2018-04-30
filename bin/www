@@ -32,60 +32,66 @@ var io = require('socket.io')(server);
 
 
 io.on('connection', function(socket){
-   connections.push[socket.id];
-  console.log('socket connected',connections.length);
    
 
   //tell all clients that user connected(io means overall server)
  
   //if server emits user joined,update online users array
    socket.on('user joined',function(user){
-          console.log('a user connected',user)
+     connections.push(socket.id);
+  console.log('socket connected',connections.length);
+  
+          console.log('a user connected',user.username)
            socketMapping[user.id]=socket.id;
 
           if(users[user.id] == undefined){
              users[user.id]=user.username;
           }
-        
+       // console.log('userId:'+user.id);
          socket.userId=user.id;
          socket.username=user.username;
-         console.log(socket.userId+' '+socket.username);
+        // console.log(socket.userId+' '+socket.username);
          names[socket.userId]={
              name:socket.username,
-             socketId:socket.id
+             socketId:socket.id,
+             username:socket.username,
+             id:user.id
          }
 
          socket.join('some room');
 
-         console.log('available users',users);
+       //  console.log('available users',users);
          io.emit('user joined',user);
          //socket disconnected
         
-         updateNames(user);
+         updateNames();
         
-          socket.on('disconnect',function(){
-            console.log('user left',user);
-            if(!socket.username) return;
-            delete names[socket.userId];
-           
-            //tell all clients that user disconnected(io means overall server)
-            socket.broadcast.emit('user left',user);
-
-            updateNames(user);
-        });
-
+          
          
 
     });
 
-   
+   socket.on('disconnect',function(){
+            console.log('user left',socket.userId);
+            console.log(names[socket.userId]);
+            
+            console.log(socketMapping[socket.userId]);
+            console.log(users[socket.userId]);
+            if(!socket.username) return;
+            var name=users[socket.userId].name;
+            delete names[socket.userId];
+            delete socketMapping[socket.userId];
+            delete users[socket.userId];
+           // connections.splice(connections.indexOf(socket.id),1);
+            //tell all clients that user disconnected(io means overall server)
+            socket.broadcast.emit('user left',name);
+
+            updateNames();
+        });
+
 
   
-    function updateNames(user){
-            console.log('namesnames',names);
-           io.emit('availableusers',names)
-    }
-
+    
 
    socket.on('chat.message',function(message){
           console.log('server message',message)
@@ -105,7 +111,14 @@ io.on('connection', function(socket){
 
 });	
 
-  
+  function updateNames(){
+    for(var i in names){
+      console.log('namesnames',names[i].name);
+           
+    }
+           io.emit('availableusers',names)
+    }
+
   
 
 /**

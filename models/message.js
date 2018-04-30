@@ -9,10 +9,10 @@ var message = new mongoose.Schema({
     created_at: { type: Date, default: Date.now },
     group_id:{type: Schema.Types.ObjectId, ref: 'Group'},
     messages: [{
-        receiver_id:{ type: Schema.Types.ObjectId, ref: 'User' },
+        receiver_id:[{ type: Schema.Types.ObjectId, ref: 'User' }],
         message:{ type: String},
         sender_id:{ type: Schema.Types.ObjectId, ref: 'User' },
-        timrStamp:{ type: Date, default: Date.now }
+        timeStamp:{ type: Date, default: Date.now }
     }],
     unique_id:{type:String}
 });

@@ -17,6 +17,8 @@ router.post('/api/getOnlineUsers', authController.getOnlineUsers);
 
 router.post('/api/saveMessage', chatController.saveMessage);
 
+router.post('/api/getRecentMessages', chatController.getRecentMessages);
+
 
 
 //router.post('/api/userLogin',  function(req, res, next) {
